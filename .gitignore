@@ -1,0 +1,38 @@
+# maven ignore
+target/
+*.jar
+!.mvn/wrapper/*
+*.war
+*.zip
+*.tar
+*.tar.gz
+
+# eclipse ignore
+.settings/
+.externalToolBuilders/
+.project
+.classpath
+
+# idea ignore
+.idea/
+*.ipr
+*.iml
+*.iws
+
+# temp ignore
+*.log
+*.cache
+*.diff
+*.patch
+*.tmp
+*.springBeans
+.*.bat
+
+**/bin/**
+
+# system ignore
+.DS_Store
+Thumbs.db
+
+**/**/.factorypath
+*.versionsBackup
