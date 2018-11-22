@@ -13,7 +13,7 @@ import java.util.Date;
  * @Date: 2018/11/16 15:00
  * @Description:
  */
-public class Main {
+public class MatrixMultiplierMain {
 
     public static void main(String[] args) {
         double[][] matrix1 = MatrixGenerator.generate(2000, 2000);
