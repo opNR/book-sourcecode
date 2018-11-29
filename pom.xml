@@ -12,6 +12,7 @@
 
   <modules>
     <module>Mastering-Concurrency-Programming</module>
+    <module>netty-study</module>
   </modules>
 
   <properties>
