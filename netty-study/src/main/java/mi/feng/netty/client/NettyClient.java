@@ -1,4 +1,4 @@
-package mi.feng.netty;
+package mi.feng.netty.client;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
