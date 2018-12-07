@@ -2,14 +2,13 @@ package mi.feng.netty;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
-import mi.feng.netty.protocol.command.Packet;
-import mi.feng.netty.protocol.command.PacketCodeC;
-import mi.feng.netty.request.LoginRequestPacket;
+import mi.feng.netty.protocol.Packet;
+import mi.feng.netty.protocol.PacketCodeC;
+import mi.feng.netty.protocol.request.LoginRequestPacket;
 import mi.feng.netty.serialize.Serializer;
 import mi.feng.netty.serialize.impl.JSONSerializer;
 import org.junit.Assert;
 import org.junit.Test;
-import sun.rmi.runtime.Log;
 
 import java.util.UUID;
 
@@ -35,7 +34,7 @@ public class TestPacketCodeC {
         loginRequestPacket.setPassword("password");
 
         PacketCodeC packetCodeC = PacketCodeC.INSTANCE;
-        ByteBuf byteBuf = packetCodeC.encode(ByteBufAllocator.DEFAULT, loginRequestPacket);
+        ByteBuf byteBuf = packetCodeC.encode(ByteBufAllocator.DEFAULT.buffer(), loginRequestPacket);
         Packet decodedPacket = packetCodeC.decode(byteBuf);
 
         Assert.assertArrayEquals(serializer.serialize(loginRequestPacket), serializer.serialize(decodedPacket));

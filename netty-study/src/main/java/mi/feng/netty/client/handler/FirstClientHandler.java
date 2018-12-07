@@ -1,4 +1,4 @@
-package mi.feng.netty.client;
+package mi.feng.netty.client.handler;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

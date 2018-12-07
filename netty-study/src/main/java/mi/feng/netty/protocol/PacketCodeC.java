@@ -1,15 +1,12 @@
-package mi.feng.netty.protocol.command;
+package mi.feng.netty.protocol;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufAllocator;
-import mi.feng.netty.request.LoginRequestPacket;
-import mi.feng.netty.request.MessageRequestPacket;
-import mi.feng.netty.response.LoginResponsePacket;
-import mi.feng.netty.response.MessageResponsePacket;
+import mi.feng.netty.protocol.request.LoginRequestPacket;
+import mi.feng.netty.protocol.request.MessageRequestPacket;
+import mi.feng.netty.protocol.response.LoginResponsePacket;
+import mi.feng.netty.protocol.response.MessageResponsePacket;
 import mi.feng.netty.serialize.Serializer;
 import mi.feng.netty.serialize.impl.JSONSerializer;
-import sun.plugin2.message.Message;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,10 +37,8 @@ public class PacketCodeC {
         serializerMap.put(serializer.getSerializerAlogrithm(), serializer);
     }
 
-    public ByteBuf encode(ByteBufAllocator byteBufAllocator, Packet packet){
-        // 1. 创建 ByteBuf 对象
-        ByteBuf byteBuf = byteBufAllocator.ioBuffer();
-        // 2. 序列化 java 对象
+    public ByteBuf encode(ByteBuf byteBuf, Packet packet){
+        // 1. 序列化 java 对象
         byte[] bytes = Serializer.DEFAULT.serialize(packet);
 
         // 3. 实际编码过程

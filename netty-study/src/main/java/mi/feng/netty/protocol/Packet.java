@@ -1,4 +1,4 @@
-package mi.feng.netty.protocol.command;
+package mi.feng.netty.protocol;
 
 import com.alibaba.fastjson.annotation.JSONField;
 

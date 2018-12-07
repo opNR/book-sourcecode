@@ -1,15 +1,14 @@
-package mi.feng.netty.server;
+package mi.feng.netty.server.handler;
 
-import com.alibaba.fastjson.JSON;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import mi.feng.netty.protocol.command.Packet;
-import mi.feng.netty.protocol.command.PacketCodeC;
-import mi.feng.netty.request.LoginRequestPacket;
-import mi.feng.netty.request.MessageRequestPacket;
-import mi.feng.netty.response.LoginResponsePacket;
-import mi.feng.netty.response.MessageResponsePacket;
+import mi.feng.netty.protocol.Packet;
+import mi.feng.netty.protocol.PacketCodeC;
+import mi.feng.netty.protocol.request.LoginRequestPacket;
+import mi.feng.netty.protocol.request.MessageRequestPacket;
+import mi.feng.netty.protocol.response.LoginResponsePacket;
+import mi.feng.netty.protocol.response.MessageResponsePacket;
 
 import java.util.Date;
 
@@ -42,7 +41,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
                 loginResponsePacket.setReason("账号或密码失败");
             }
 
-            ByteBuf responseByteBuf = PacketCodeC.INSTANCE.encode(ctx.alloc(), loginResponsePacket);
+            ByteBuf responseByteBuf = PacketCodeC.INSTANCE.encode(ctx.alloc().buffer(), loginResponsePacket);
             ctx.channel().writeAndFlush(responseByteBuf);
 
         } else if (packet instanceof MessageRequestPacket) {
@@ -51,7 +50,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 
             MessageResponsePacket messageResponsePacket = new MessageResponsePacket();
             messageResponsePacket.setMessage("服务端回复[" + messageRequestPacket.getMessage() +"]");
-            ByteBuf responseByteBuf = PacketCodeC.INSTANCE.encode(ctx.alloc(), messageResponsePacket);
+            ByteBuf responseByteBuf = PacketCodeC.INSTANCE.encode(ctx.alloc().buffer(), messageResponsePacket);
             ctx.channel().writeAndFlush(responseByteBuf);
         }
     }

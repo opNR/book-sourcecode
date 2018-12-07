@@ -7,7 +7,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.AttributeKey;
-import mi.feng.netty.client.FirstClientHandler;
+import mi.feng.netty.client.handler.FirstClientHandler;
 
 import java.util.Date;
 import java.util.concurrent.TimeUnit;

@@ -1,7 +1,6 @@
 package mi.feng.netty.client;
 
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -9,9 +8,12 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import mi.feng.netty.protocol.command.PacketCodeC;
-import mi.feng.netty.request.MessageRequestPacket;
-import mi.feng.netty.response.MessageResponsePacket;
+
+import mi.feng.netty.client.handler.LoginResponseHandler;
+import mi.feng.netty.client.handler.MessageResponseHandler;
+import mi.feng.netty.codec.PacketDecoder;
+import mi.feng.netty.codec.PacketEncoder;
+import mi.feng.netty.protocol.request.MessageRequestPacket;
 import mi.feng.netty.utils.LoginUtil;
 
 import java.util.Date;
@@ -42,7 +44,10 @@ public class NettyClient {
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     public void initChannel(SocketChannel ch) {
-                        ch.pipeline().addLast(new ClientHandler());
+                        ch.pipeline().addLast(new PacketDecoder());
+                        ch.pipeline().addLast(new LoginResponseHandler());
+                        ch.pipeline().addLast(new MessageResponseHandler());
+                        ch.pipeline().addLast(new PacketEncoder());
                     }
                 });
 
@@ -78,11 +83,9 @@ public class NettyClient {
                     Scanner sc = new Scanner(System.in);
                     String line = sc.next();
 
-                    MessageRequestPacket messageResponsePacket = new MessageRequestPacket();
-                    messageResponsePacket.setMessage(line);
-
-                    ByteBuf byteBuf = PacketCodeC.INSTANCE.encode(channel.alloc(), messageResponsePacket);
-                    channel.writeAndFlush(byteBuf);
+                    MessageRequestPacket requestPacket = new MessageRequestPacket();
+                    requestPacket.setMessage(line);
+                    channel.writeAndFlush(requestPacket);
                 }
             }
         }).start();

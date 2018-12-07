@@ -1,6 +1,6 @@
-package mi.feng.netty.request;
+package mi.feng.netty.protocol.request;
 
-import mi.feng.netty.protocol.command.Packet;
+import mi.feng.netty.protocol.Packet;
 
 import static mi.feng.netty.protocol.command.Command.MESSAGE_REQUEST;
 

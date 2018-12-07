@@ -1,14 +1,13 @@
-package mi.feng.netty.client;
+package mi.feng.netty.client.handler;
 
-import com.alibaba.fastjson.JSON;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import mi.feng.netty.request.LoginRequestPacket;
-import mi.feng.netty.protocol.command.Packet;
-import mi.feng.netty.protocol.command.PacketCodeC;
-import mi.feng.netty.response.LoginResponsePacket;
-import mi.feng.netty.response.MessageResponsePacket;
+import mi.feng.netty.protocol.request.LoginRequestPacket;
+import mi.feng.netty.protocol.Packet;
+import mi.feng.netty.protocol.PacketCodeC;
+import mi.feng.netty.protocol.response.LoginResponsePacket;
+import mi.feng.netty.protocol.response.MessageResponsePacket;
 import mi.feng.netty.utils.LoginUtil;
 
 import java.util.Date;
@@ -31,7 +30,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
         loginRequestPacket.setPassword("123456");
 
         //编码
-        ByteBuf buffer = PacketCodeC.INSTANCE.encode(ctx.alloc(), loginRequestPacket);
+        ByteBuf buffer = PacketCodeC.INSTANCE.encode(ctx.alloc().buffer(), loginRequestPacket);
 
         //写数据
         ctx.channel().writeAndFlush(buffer);

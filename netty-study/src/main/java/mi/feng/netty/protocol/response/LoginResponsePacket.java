@@ -1,6 +1,6 @@
-package mi.feng.netty.response;
+package mi.feng.netty.protocol.response;
 
-import mi.feng.netty.protocol.command.Packet;
+import mi.feng.netty.protocol.Packet;
 
 import static mi.feng.netty.protocol.command.Command.LOGIN_RESPONSE;
 

@@ -6,6 +6,11 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import mi.feng.netty.codec.PacketDecoder;
+import mi.feng.netty.codec.PacketEncoder;
+import mi.feng.netty.server.handler.LoginRequestHandler;
+import mi.feng.netty.server.handler.MessageRequestHandler;
+import mi.feng.netty.server.handler.ServerHandler;
 
 /**
  * @Auther: MiFeng
@@ -30,7 +35,10 @@ public class NettyServer {
                 .childHandler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
                     protected void initChannel(NioSocketChannel ch) throws Exception {
-                        ch.pipeline().addLast(new ServerHandler());
+                        ch.pipeline().addLast(new PacketDecoder());
+                        ch.pipeline().addLast(new LoginRequestHandler());
+                        ch.pipeline().addLast(new MessageRequestHandler());
+                        ch.pipeline().addLast(new PacketEncoder());
                     }
                 });
 
