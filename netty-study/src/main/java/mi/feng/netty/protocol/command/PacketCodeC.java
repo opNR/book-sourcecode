@@ -3,15 +3,17 @@ package mi.feng.netty.protocol.command;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import mi.feng.netty.request.LoginRequestPacket;
+import mi.feng.netty.request.MessageRequestPacket;
 import mi.feng.netty.response.LoginResponsePacket;
+import mi.feng.netty.response.MessageResponsePacket;
 import mi.feng.netty.serialize.Serializer;
 import mi.feng.netty.serialize.impl.JSONSerializer;
+import sun.plugin2.message.Message;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static mi.feng.netty.protocol.command.Command.LOGIN_REQUEST;
-import static mi.feng.netty.protocol.command.Command.LOGIN_RESPONSE;
+import static mi.feng.netty.protocol.command.Command.*;
 
 /**
  * @Auther: MiFeng
@@ -30,6 +32,8 @@ public class PacketCodeC {
         packetTypeMap = new HashMap<>();
         packetTypeMap.put(LOGIN_REQUEST, LoginRequestPacket.class);
         packetTypeMap.put(LOGIN_RESPONSE, LoginResponsePacket.class);
+        packetTypeMap.put(MESSAGE_REQUEST, MessageRequestPacket.class);
+        packetTypeMap.put(MESSAGE_RESPONSE, MessageResponsePacket.class);
 
         serializerMap = new HashMap<>();
         Serializer serializer = new JSONSerializer();

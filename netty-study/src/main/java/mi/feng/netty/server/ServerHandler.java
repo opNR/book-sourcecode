@@ -7,7 +7,9 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import mi.feng.netty.protocol.command.Packet;
 import mi.feng.netty.protocol.command.PacketCodeC;
 import mi.feng.netty.request.LoginRequestPacket;
+import mi.feng.netty.request.MessageRequestPacket;
 import mi.feng.netty.response.LoginResponsePacket;
+import mi.feng.netty.response.MessageResponsePacket;
 
 import java.util.Date;
 
@@ -21,13 +23,14 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         System.out.println(new Date() + ": 客户端开始登录……");
-        LoginResponsePacket loginResponsePacket = new LoginResponsePacket();
 
         ByteBuf requestByteBuf = (ByteBuf) msg;
 
         Packet packet = PacketCodeC.INSTANCE.decode(requestByteBuf);
 
         if (packet instanceof LoginRequestPacket) {
+            LoginResponsePacket loginResponsePacket = new LoginResponsePacket();
+
             LoginRequestPacket loginRequestPacket = (LoginRequestPacket) packet;
 
             if (valid(loginRequestPacket)) {
@@ -41,10 +44,19 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 
             ByteBuf responseByteBuf = PacketCodeC.INSTANCE.encode(ctx.alloc(), loginResponsePacket);
             ctx.channel().writeAndFlush(responseByteBuf);
+
+        } else if (packet instanceof MessageRequestPacket) {
+            MessageRequestPacket messageRequestPacket = (MessageRequestPacket) packet;
+            System.out.println(new Date() + ": 收到客户端消息：" + messageRequestPacket.getMessage());
+
+            MessageResponsePacket messageResponsePacket = new MessageResponsePacket();
+            messageResponsePacket.setMessage("服务端回复[" + messageRequestPacket.getMessage() +"]");
+            ByteBuf responseByteBuf = PacketCodeC.INSTANCE.encode(ctx.alloc(), messageResponsePacket);
+            ctx.channel().writeAndFlush(responseByteBuf);
         }
     }
 
     private boolean valid(LoginRequestPacket loginRequestPacket){
-        return false;
+        return true;
     }
 }

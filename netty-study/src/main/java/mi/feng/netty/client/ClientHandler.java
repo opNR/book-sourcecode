@@ -8,6 +8,8 @@ import mi.feng.netty.request.LoginRequestPacket;
 import mi.feng.netty.protocol.command.Packet;
 import mi.feng.netty.protocol.command.PacketCodeC;
 import mi.feng.netty.response.LoginResponsePacket;
+import mi.feng.netty.response.MessageResponsePacket;
+import mi.feng.netty.utils.LoginUtil;
 
 import java.util.Date;
 import java.util.UUID;
@@ -46,9 +48,15 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
 
             if (loginResponsePacket.isSuccess()) {
                 System.out.println(new Date() + "：客户端登陆成功");
+
+                LoginUtil.markAsLogin(ctx.channel());
             } else {
                 System.out.println(new Date() + "：客户端登陆失败,原因：" + loginResponsePacket.getReason());
             }
+
+        } else if (packet instanceof MessageResponsePacket){
+            MessageResponsePacket messageResponsePacket = (MessageResponsePacket) packet;
+            System.out.println(new Date() + ": 收到服务端消息：" + messageResponsePacket.getMessage());
         }
     }
 }
