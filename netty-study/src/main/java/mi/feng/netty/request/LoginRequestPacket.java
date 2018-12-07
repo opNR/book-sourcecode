@@ -1,4 +1,6 @@
-package mi.feng.netty.protocol.command;
+package mi.feng.netty.request;
+
+import mi.feng.netty.protocol.command.Packet;
 
 import static mi.feng.netty.protocol.command.Command.LOGIN_REQUEST;
 
@@ -9,7 +11,7 @@ import static mi.feng.netty.protocol.command.Command.LOGIN_REQUEST;
  */
 public class LoginRequestPacket extends Packet {
 
-    private Integer userId;
+    private String userId;
 
     private String userName;
 
@@ -21,11 +23,11 @@ public class LoginRequestPacket extends Packet {
     }
 
 
-    public Integer getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

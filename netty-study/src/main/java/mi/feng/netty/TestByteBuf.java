@@ -9,7 +9,7 @@ import io.netty.buffer.Unpooled;
  * @Date: 2018/12/5 10:49
  * @Description:
  */
-public class ByteBufDemo {
+public class TestByteBuf {
 
     public static void main(String[] args) {
 

@@ -6,7 +6,6 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.util.AttributeKey;
 
 /**
  * @Auther: MiFeng
@@ -15,34 +14,23 @@ import io.netty.util.AttributeKey;
  */
 public class NettyServer {
 
-    private static final int PORT = 8000;
+    private static final int PORT = 8088;
 
     public static void main(String[] args) {
-        //线程组：监听端口、accept新连接
         NioEventLoopGroup boosGroup = new NioEventLoopGroup();
-        //线程组：处理一条连接的数据读写
         NioEventLoopGroup workerGroup = new NioEventLoopGroup();
 
         final ServerBootstrap serverBootstrap = new ServerBootstrap();
-        final AttributeKey<Object> clientKey = AttributeKey.newInstance("clientKey");
-
         serverBootstrap
-                // 1. 指定线程模型
                 .group(boosGroup, workerGroup)
-                // 2. 指定IO模型为 NIO
                 .channel(NioServerSocketChannel.class)
-
-                .attr(AttributeKey.newInstance("serverName"), "nettyServer")
-                .childAttr(clientKey, "clientValue")
-
                 .option(ChannelOption.SO_BACKLOG, 1024)
                 .childOption(ChannelOption.SO_KEEPALIVE, true)
                 .childOption(ChannelOption.TCP_NODELAY, true)
-                // 3. 处理新连接数据的读写处理逻辑
                 .childHandler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
                     protected void initChannel(NioSocketChannel ch) throws Exception {
-                        ch.pipeline().addLast(new FirstServerHandler());
+                        ch.pipeline().addLast(new ServerHandler());
                     }
                 });
 
@@ -56,7 +44,7 @@ public class NettyServer {
                 System.out.println("端口[" + port + "]绑定成功");
             }else {
                 System.err.println("端口[" + port + "]绑定失败");
-                bind(serverBootstrap, port+1);
+//                bind(serverBootstrap, port+1);
             }
         });
     }

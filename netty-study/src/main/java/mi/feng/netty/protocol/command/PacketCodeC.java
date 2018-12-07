@@ -2,6 +2,8 @@ package mi.feng.netty.protocol.command;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
+import mi.feng.netty.request.LoginRequestPacket;
+import mi.feng.netty.response.LoginResponsePacket;
 import mi.feng.netty.serialize.Serializer;
 import mi.feng.netty.serialize.impl.JSONSerializer;
 
@@ -9,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static mi.feng.netty.protocol.command.Command.LOGIN_REQUEST;
+import static mi.feng.netty.protocol.command.Command.LOGIN_RESPONSE;
 
 /**
  * @Auther: MiFeng
@@ -18,21 +21,24 @@ import static mi.feng.netty.protocol.command.Command.LOGIN_REQUEST;
 public class PacketCodeC {
 
     private static final int MAGIC_NUMBER = 0x12345678;
+    public static final PacketCodeC INSTANCE = new PacketCodeC();
+
     private static final Map<Byte, Class<? extends Packet>> packetTypeMap;
     private static final Map<Byte, Serializer> serializerMap;
 
     static {
         packetTypeMap = new HashMap<>();
         packetTypeMap.put(LOGIN_REQUEST, LoginRequestPacket.class);
+        packetTypeMap.put(LOGIN_RESPONSE, LoginResponsePacket.class);
 
         serializerMap = new HashMap<>();
         Serializer serializer = new JSONSerializer();
         serializerMap.put(serializer.getSerializerAlogrithm(), serializer);
     }
 
-    public ByteBuf encode(Packet packet){
+    public ByteBuf encode(ByteBufAllocator byteBufAllocator, Packet packet){
         // 1. 创建 ByteBuf 对象
-        ByteBuf byteBuf = ByteBufAllocator.DEFAULT.ioBuffer();
+        ByteBuf byteBuf = byteBufAllocator.ioBuffer();
         // 2. 序列化 java 对象
         byte[] bytes = Serializer.DEFAULT.serialize(packet);
 
@@ -64,7 +70,7 @@ public class PacketCodeC {
         int length = byteBuf.readInt();
 
         byte[] bytes = new byte[length];
-        byteBuf.writeBytes(bytes);
+        byteBuf.readBytes(bytes);
 
         Class<? extends Packet> requestType = getRequestType(command);
         Serializer serializer = getSerializer(serializeAlogrithm);
